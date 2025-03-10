@@ -48,19 +48,14 @@ std::pair<Vector3D, CrossingStatus> Segment3D::Intersect(
     return std::make_pair(Vector3D(x(0), x(1), x(2)), CrossingStatus::CROSSING);
   }
 
-  if (merged_A.fullPivLu().rank() < augmented_matrix.fullPivLu().rank()) {
+  if (merged_A.fullPivLu().rank() < augmented_matrix.fullPivLu().rank() ||
+      3 < augmented_matrix.fullPivLu().rank()) {
     return std::make_pair(Vector3D(std::numeric_limits<double>::infinity(),
                                    std::numeric_limits<double>::infinity(),
                                    std::numeric_limits<double>::infinity()),
                           CrossingStatus::NO_CROSSING);
-  } else {
-    return std::make_pair(Vector3D(0, 0, 0), CrossingStatus::CONCIDENT);
   }
-
-  return std::make_pair(Vector3D(std::numeric_limits<double>::infinity(),
-                                 std::numeric_limits<double>::infinity(),
-                                 std::numeric_limits<double>::infinity()),
-                        CrossingStatus::NO_CROSSING);
+  return std::make_pair(Vector3D(0, 0, 0), CrossingStatus::CONCIDENT);
 
   // plane.MergeMatrix(other_segment.plane);
   // int rank = plane.CalculateRankUsingMinors();
